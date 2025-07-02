@@ -23,6 +23,7 @@ model Participant {
   name        String
   dept        String?
   designation String?
+  isActive    Boolean                 @default(true)
   createdAt   DateTime                @default(now())
   assignments TrainingParticipant[]
 }
@@ -68,4 +69,12 @@ model Feedback {
   additionalComments     String?                 
 
   submittedAt            DateTime                @default(now())
+}
+
+model Admin {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  avatar   String?
+  createdAt DateTime @default(now())
 }
