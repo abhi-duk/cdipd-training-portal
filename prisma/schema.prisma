@@ -1,0 +1,71 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Training {
+  id          Int                     @id @default(autoincrement())
+  topic       String
+  date        DateTime
+  trainer     String
+  isActive    Boolean                 @default(true)
+  createdAt   DateTime                @default(now())
+  assignments TrainingParticipant[]
+}
+
+model Participant {
+  id          Int                     @id @default(autoincrement())
+  email       String                  @unique
+  name        String
+  dept        String?
+  designation String?
+  createdAt   DateTime                @default(now())
+  assignments TrainingParticipant[]
+}
+
+model TrainingParticipant {
+  id            Int         @id @default(autoincrement())
+  training      Training    @relation(fields: [trainingId], references: [id])
+  trainingId    Int
+  participant   Participant @relation(fields: [participantId], references: [id])
+  participantId Int
+  feedback      Feedback?
+  assignedAt    DateTime    @default(now())
+
+  @@unique([trainingId, participantId])
+}
+
+model Feedback {
+  id                     Int                     @id @default(autoincrement())
+  tp                     TrainingParticipant     @relation(fields: [tpId], references: [id])
+  tpId                   Int                     @unique
+
+  // About Trainer
+  trainerExplanation     String                  
+  trainerKnowledge       String                  
+  trainerEngagement      String                  
+  trainerAnswering       String                  
+
+  // Content Feedback
+  contentRelevance       String                  
+  contentClarity         String                  
+  contentOrganization    String                  
+
+  // Infrastructure Feedback
+  infrastructureComfort  String                  
+  seatingArrangement     String                  
+  venueLocation          String                  
+
+  // Overall Satisfaction & Recommendation
+  overallSatisfaction    String                  
+  recommendTraining      Boolean                 
+
+  // Additional Comments
+  additionalComments     String?                 
+
+  submittedAt            DateTime                @default(now())
+}
