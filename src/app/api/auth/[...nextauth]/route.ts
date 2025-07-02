@@ -4,5 +4,5 @@ import { authOptions } from "@/lib/auth";
 
 const handler = NextAuth(authOptions);
 
-// Only export the Route Handler methods Next.js expects:
+// ONLY these two exports
 export { handler as GET, handler as POST };

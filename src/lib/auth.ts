@@ -21,9 +21,7 @@ export const authOptions: NextAuthOptions = {
       return !!exists;
     },
   },
-  pages: {
-    error: "/not-registered",
-  },
+  pages: { error: "/not-registered" },
   secret: process.env.NEXTAUTH_SECRET,
   session: { strategy: "jwt" },
 };
