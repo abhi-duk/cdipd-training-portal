@@ -3,12 +3,12 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// GET /api/participants/[participantId]/trainings
 export async function GET(
   request: NextRequest,
-  { params }: { params: { participantId: string } }
+  context: { params: { participantId: string } }
 ) {
-  const participantId = Number(params.participantId);
+  // Always use context.params, not destructured directly in signature
+  const participantId = Number(context.params.participantId);
 
   if (!participantId) {
     return NextResponse.json({ error: "Missing or invalid participantId" }, { status: 400 });

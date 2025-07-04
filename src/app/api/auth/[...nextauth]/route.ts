@@ -1,25 +1,33 @@
+// src/app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const authOptions = {
+export const authOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID!,
-      clientSecret: process.env.GOOGLE_SECRET!,
+      clientId: process.env.GOOGLE_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
     }),
   ],
   callbacks: {
     async session({ session }) {
-      if (session?.user?.email) {
+      if (session.user?.email) {
         const admin = await prisma.admin.findUnique({
           where: { email: session.user.email },
         });
-        (session.user as any).isAdmin = !!admin;
-        (session.user as any).adminName = admin?.name || session.user.name;
-        (session.user as any).avatar = admin?.avatar || session.user.image;
+        
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            isAdmin: !!admin,
+            adminName: admin?.name || session.user.name,
+            avatar: admin?.avatar || session.user.image,
+          }
+        };
       }
       return session;
     },
@@ -32,9 +40,9 @@ const authOptions = {
   pages: {
     signIn: "/select-role",
   },
+  secret: process.env.NEXTAUTH_SECRET as string,
 };
 
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-// DO NOT export authOptions!
