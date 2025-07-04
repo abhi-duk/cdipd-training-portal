@@ -6,40 +6,201 @@ import { Star, CheckCircle2, Printer, LogOut, Home } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
-const RATING_ICONS = [
-  { color: "text-red-400", label: "Poor" },
-  { color: "text-orange-400", label: "Fair" },
-  { color: "text-yellow-400", label: "Good" },
-  { color: "text-blue-500", label: "Very Good" },
-  { color: "text-green-600", label: "Excellent" },
+// All questions, options (as per doc), and which get a star display
+const QUESTIONS = [
+  {
+    key: "trainerExplanation",
+    section: "About Trainer",
+    label: "How well did the trainer explain the topics covered?",
+    type: "radio",
+    options: [
+      { value: "Excellent", label: "Excellent" },
+      { value: "Good", label: "Good" },
+      { value: "Average", label: "Average" },
+      { value: "Poor", label: "Poor" },
+    ],
+    showStars: true,
+  },
+  {
+    key: "trainerKnowledge",
+    section: "About Trainer",
+    label: "Did the trainer demonstrate in-depth knowledge of the subject?",
+    type: "radio",
+    options: [
+      { value: "Strongly Agree", label: "Strongly Agree" },
+      { value: "Agree", label: "Agree" },
+      { value: "Neutral", label: "Neutral" },
+      { value: "Disagree", label: "Disagree" },
+    ],
+    showStars: false,
+  },
+  {
+    key: "trainerEngagement",
+    section: "About Trainer",
+    label: "How engaging was the trainer throughout the session?",
+    type: "radio",
+    options: [
+      { value: "Very Engaging", label: "Very Engaging" },
+      { value: "Engaging", label: "Engaging" },
+      { value: "Somewhat Engaging", label: "Somewhat Engaging" },
+      { value: "Not Engaging", label: "Not Engaging" },
+    ],
+    showStars: false,
+  },
+  {
+    key: "trainerAnswering",
+    section: "About Trainer",
+    label: "Was the trainer able to answer questions effectively?",
+    type: "radio",
+    options: [
+      { value: "Always", label: "Always" },
+      { value: "Most of the time", label: "Most of the time" },
+      { value: "Sometimes", label: "Sometimes" },
+      { value: "Rarely", label: "Rarely" },
+    ],
+    showStars: false,
+  },
+  {
+    key: "contentRelevance",
+    section: "Content Feedback",
+    label: "How relevant was the training content to your role?",
+    type: "radio",
+    options: [
+      { value: "Very Relevant", label: "Very Relevant" },
+      { value: "Somewhat Relevant", label: "Somewhat Relevant" },
+      { value: "Neutral", label: "Neutral" },
+      { value: "Not Relevant", label: "Not Relevant" },
+    ],
+    showStars: false,
+  },
+  {
+    key: "contentClarity",
+    section: "Content Feedback",
+    label: "How would you rate the clarity of the training materials?",
+    type: "radio",
+    options: [
+      { value: "Excellent", label: "Excellent" },
+      { value: "Good", label: "Good" },
+      { value: "Average", label: "Average" },
+      { value: "Poor", label: "Poor" },
+    ],
+    showStars: true,
+  },
+  {
+    key: "contentOrganization",
+    section: "Content Feedback",
+    label: "Was the content organized and easy to follow?",
+    type: "radio",
+    options: [
+      { value: "Strongly Agree", label: "Strongly Agree" },
+      { value: "Agree", label: "Agree" },
+      { value: "Neutral", label: "Neutral" },
+      { value: "Disagree", label: "Disagree" },
+    ],
+    showStars: false,
+  },
+  {
+    key: "infrastructureComfort",
+    section: "Infrastructure Feedback",
+    label: "Were the training facilities comfortable and conducive to learning?",
+    type: "radio",
+    options: [
+      { value: "Strongly Agree", label: "Strongly Agree" },
+      { value: "Agree", label: "Agree" },
+      { value: "Neutral", label: "Neutral" },
+      { value: "Disagree", label: "Disagree" },
+    ],
+    showStars: false,
+  },
+  {
+    key: "seatingArrangement",
+    section: "Infrastructure Feedback",
+    label: "Was the seating arrangement appropriate for the training format?",
+    type: "radio",
+    options: [
+      { value: "Strongly Agree", label: "Strongly Agree" },
+      { value: "Agree", label: "Agree" },
+      { value: "Neutral", label: "Neutral" },
+      { value: "Disagree", label: "Disagree" },
+    ],
+    showStars: false,
+  },
+  {
+    key: "venueLocation",
+    section: "Infrastructure Feedback",
+    label: "Was the location of the training venue convenient?",
+    type: "radio",
+    options: [
+      { value: "Strongly Agree", label: "Strongly Agree" },
+      { value: "Agree", label: "Agree" },
+      { value: "Neutral", label: "Neutral" },
+      { value: "Disagree", label: "Disagree" },
+    ],
+    showStars: false,
+  },
+  {
+    key: "overallSatisfaction",
+    section: "",
+    label: "How satisfied are you with the training overall?",
+    type: "radio",
+    options: [
+      { value: "Very Satisfied", label: "Very Satisfied" },
+      { value: "Satisfied", label: "Satisfied" },
+      { value: "Neutral", label: "Neutral" },
+      { value: "Unsatisfied", label: "Unsatisfied" },
+    ],
+    showStars: true,
+  },
+  {
+    key: "recommendTraining",
+    section: "",
+    label: "Would you recommend this training session to others?",
+    type: "radio",
+    options: [
+      { value: "Yes", label: "Yes" },
+      { value: "No", label: "No" },
+    ],
+    showStars: false,
+  },
+  {
+    key: "additionalComments",
+    section: "",
+    label: "Additional comments/ suggestions",
+    type: "textarea",
+    options: [],
+    showStars: false,
+  },
 ];
 
-const INITIAL_FEEDBACK = {
-  trainerExplanation: 3,
-  trainerKnowledge: 3,
-  trainerEngagement: 3,
-  trainerAnswering: 3,
-  contentRelevance: 3,
-  contentClarity: 3,
-  contentOrganization: 3,
-  infrastructureComfort: 3,
-  seatingArrangement: 3,
-  venueLocation: 3,
-  overallSatisfaction: 3,
-  recommendTraining: false,
-  additionalComments: "",
+// For "star" questions: mapping from value to star count
+const STAR_MAPPING: Record<string, number> = {
+  Excellent: 5,
+  Good: 4,
+  Average: 3,
+  Poor: 1,
+  "Very Satisfied": 5,
+  Satisfied: 4,
+  Neutral: 3,
+  Unsatisfied: 1,
 };
 
+const INITIAL_FEEDBACK = Object.fromEntries(
+  QUESTIONS.map((q) =>
+    q.type === "textarea"
+      ? [q.key, ""]
+      : [q.key, q.options[0]?.value ?? ""]
+  )
+);
+
 export default function FeedbackFormPage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  const { data: session } = useSession();
   const params = useParams<{ trainingId: string }>();
   const trainingId = params.trainingId;
 
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<any>(INITIAL_FEEDBACK);
   const [submitted, setSubmitted] = useState(false);
-  const [viewMode, setViewMode] = useState(false); // for printable mode
+  const [viewMode, setViewMode] = useState(false);
   const [training, setTraining] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [participant, setParticipant] = useState<any>(null);
@@ -48,7 +209,8 @@ export default function FeedbackFormPage() {
     async function load() {
       setLoading(true);
       setErrorMsg(null);
-      // Get training details
+
+      // Fetch training details
       const tRes = await fetch(`/api/trainings/${trainingId}`);
       if (tRes.ok) setTraining((await tRes.json()).training);
 
@@ -76,19 +238,10 @@ export default function FeedbackFormPage() {
     if (session?.user?.email) load();
   }, [session?.user?.email, trainingId]);
 
-  // Handle feedback change
-  function handleRate(field: string, value: number) {
-    setFeedback((f: any) => ({ ...f, [field]: value }));
-  }
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const { name, value, type, checked } = e.target;
-    setFeedback((f: any) => ({
-      ...f,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+  function handleChange(key: string, value: string) {
+    setFeedback((prev: any) => ({ ...prev, [key]: value }));
   }
 
-  // Submit handler
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -120,7 +273,7 @@ export default function FeedbackFormPage() {
       setViewMode(true);
     } else {
       let err = { error: "Could not submit feedback" };
-      try { err = await postRes.json(); } catch (_) {}
+      try { err = await postRes.json(); } catch (_) { }
       setErrorMsg(err?.error || "Could not submit feedback");
       toast.error(err?.error || "Could not submit feedback");
     }
@@ -129,10 +282,6 @@ export default function FeedbackFormPage() {
 
   function printPage() {
     window.print();
-  }
-
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center text-xl text-blue-700">Loading...</div>;
   }
 
   // --- PARTICIPANT HEADER ---
@@ -169,7 +318,7 @@ export default function FeedbackFormPage() {
     );
   }
 
-  // --- PRINTABLE VIEW (shows participant details too) ---
+  // --- PRINTABLE VIEW ---
   if (submitted && viewMode) {
     return (
       <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-blue-50 via-white to-green-100 p-4 print:bg-white">
@@ -199,30 +348,29 @@ export default function FeedbackFormPage() {
             <b>Trainer:</b> {training?.trainer}
           </div>
           <hr className="my-2" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-base">
-            {Object.entries(feedback)
-              .filter(([k, v]) => typeof v === "number")
-              .map(([key, value]) => (
-                <div key={key} className="flex items-center gap-2">
-                  <span className="capitalize">{key.replace(/([A-Z])/g, " $1")}</span>:
-                  <span className="flex gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-5 h-5 transition-all duration-300 ${i < value ? RATING_ICONS[i].color : "text-gray-300"}`}
-                        fill={i < value ? "currentColor" : "none"}
-                      />
-                    ))}
-                  </span>
+          <div className="space-y-3 text-base">
+            {QUESTIONS.map(q =>
+              q.type !== "textarea" ? (
+                <div key={q.key} className="flex flex-col gap-1 mb-2">
+                  <b>{q.label}</b>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="font-medium">{feedback[q.key]}</span>
+                    {q.showStars && (
+                      <span className="flex gap-1">
+                        {[...Array(STAR_MAPPING[feedback[q.key]] || 1)].map((_, i) => (
+                          <Star key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" />
+                        ))}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              ))}
-          </div>
-          <div className="mt-4 text-base">
-            <b>Recommend Training:</b> {feedback.recommendTraining ? "Yes" : "No"}
-          </div>
-          <div className="mt-2 text-base">
-            <b>Additional Comments:</b><br />
-            <span className="block mt-1 p-2 bg-blue-50 rounded border min-h-[40px]">{feedback.additionalComments || "—"}</span>
+              ) : (
+                <div key={q.key} className="mt-2">
+                  <b>{q.label}</b>
+                  <div className="block mt-1 p-2 bg-blue-50 rounded border min-h-[40px]">{feedback[q.key] || "—"}</div>
+                </div>
+              )
+            )}
           </div>
           <div className="mt-8 flex gap-3 print:hidden">
             <button onClick={printPage} className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg flex items-center gap-2 print:hidden">
@@ -239,7 +387,7 @@ export default function FeedbackFormPage() {
     );
   }
 
-  // --- FEEDBACK FORM (with participant header) ---
+  // --- FEEDBACK FORM ---
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-blue-50 via-white to-green-100 p-4">
       <UserHeader />
@@ -255,86 +403,49 @@ export default function FeedbackFormPage() {
           {training?.topic && <>{training.topic} <span className="font-normal text-gray-600">| Trainer: {training.trainer}</span></>}
         </div>
         {errorMsg && <div className="bg-red-100 text-red-700 border border-red-300 rounded-lg p-3 mb-4">{errorMsg}</div>}
-        {/* Sectioned and animated ratings */}
-        <div className="space-y-3">
-          <div className="font-semibold text-green-800">About the Trainer</div>
-          {[
-            { field: "trainerExplanation", label: "Explanation" },
-            { field: "trainerKnowledge", label: "Knowledge" },
-            { field: "trainerEngagement", label: "Engagement" },
-            { field: "trainerAnswering", label: "Answering Queries" },
-          ].map(({ field, label }) => (
-            <RatingRow
-              key={field}
-              label={label}
-              value={feedback[field]}
-              onRate={val => handleRate(field, val)}
-            />
+        <div className="space-y-6">
+          {QUESTIONS.map((q, idx) => (
+            <div key={q.key} className={`mb-2 ${q.section && idx > 0 && QUESTIONS[idx - 1].section !== q.section ? "pt-6 border-t" : ""}`}>
+              {q.section && (idx === 0 || QUESTIONS[idx - 1].section !== q.section) && (
+                <div className="font-bold text-green-700 mb-1 mt-3 text-lg">{q.section}</div>
+              )}
+              <label className="font-semibold text-gray-800 mb-1 block">{q.label}</label>
+              {q.type === "radio" ? (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {q.options.map((opt) => (
+                    <label key={opt.value} className="flex items-center gap-1 px-3 py-2 rounded-lg bg-gray-100 hover:bg-blue-100 cursor-pointer">
+                      <input
+                        type="radio"
+                        name={q.key}
+                        value={opt.value}
+                        checked={feedback[q.key] === opt.value}
+                        onChange={() => handleChange(q.key, opt.value)}
+                        className="accent-blue-600 w-5 h-5"
+                        required
+                      />
+                      <span className="text-base">{opt.label}</span>
+                      {q.showStars && (
+                        <span className="flex ml-1">
+                          {[...Array(STAR_MAPPING[opt.value] || 1)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 text-yellow-400" fill={feedback[q.key] === opt.value ? "currentColor" : "none"} />
+                          ))}
+                        </span>
+                      )}
+                    </label>
+                  ))}
+                </div>
+              ) : (
+                <textarea
+                  name={q.key}
+                  rows={3}
+                  className="w-full rounded-lg border border-blue-200 p-3 focus:ring-2 focus:ring-blue-400 outline-none mt-2"
+                  value={feedback[q.key]}
+                  onChange={e => handleChange(q.key, e.target.value)}
+                  placeholder="Type your comments..."
+                />
+              )}
+            </div>
           ))}
-        </div>
-        <div className="space-y-3">
-          <div className="font-semibold text-green-800 mt-6">About the Content</div>
-          {[
-            { field: "contentRelevance", label: "Relevance" },
-            { field: "contentClarity", label: "Clarity" },
-            { field: "contentOrganization", label: "Organization" },
-          ].map(({ field, label }) => (
-            <RatingRow
-              key={field}
-              label={label}
-              value={feedback[field]}
-              onRate={val => handleRate(field, val)}
-            />
-          ))}
-        </div>
-        <div className="space-y-3">
-          <div className="font-semibold text-green-800 mt-6">About Infrastructure</div>
-          {[
-            { field: "infrastructureComfort", label: "Overall Comfort" },
-            { field: "seatingArrangement", label: "Seating Arrangement" },
-            { field: "venueLocation", label: "Venue/Online Setup" },
-          ].map(({ field, label }) => (
-            <RatingRow
-              key={field}
-              label={label}
-              value={feedback[field]}
-              onRate={val => handleRate(field, val)}
-            />
-          ))}
-        </div>
-        <div className="mt-8 flex items-center gap-2">
-          <div className="font-semibold text-green-800">Overall Satisfaction:</div>
-          <RatingRow
-            value={feedback.overallSatisfaction}
-            onRate={val => handleRate("overallSatisfaction", val)}
-          />
-        </div>
-        <div className="mt-4 flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="recommendTraining"
-            name="recommendTraining"
-            checked={feedback.recommendTraining}
-            onChange={handleChange}
-            className="h-5 w-5 accent-green-500"
-          />
-          <label htmlFor="recommendTraining" className="text-base text-green-700 font-medium select-none">
-            I would recommend this training to my colleagues.
-          </label>
-        </div>
-        <div className="mt-4">
-          <label className="font-semibold text-green-800 mb-2 block" htmlFor="additionalComments">
-            Additional Comments (optional)
-          </label>
-          <textarea
-            id="additionalComments"
-            name="additionalComments"
-            rows={3}
-            className="w-full rounded-lg border border-blue-200 p-3 focus:ring-2 focus:ring-blue-400 outline-none"
-            value={feedback.additionalComments}
-            onChange={handleChange}
-            placeholder="Any suggestions or thoughts..."
-          />
         </div>
         <div className="mt-8">
           <button
@@ -347,28 +458,6 @@ export default function FeedbackFormPage() {
           </button>
         </div>
       </form>
-    </div>
-  );
-}
-
-// --- Helper: Animated Rating Row ---
-function RatingRow({ label, value, onRate }: { label?: string; value: number; onRate: (val: number) => void }) {
-  return (
-    <div className={`flex items-center gap-3 ${label ? "mb-2" : ""}`}>
-      {label && <span className="w-40 text-gray-700">{label}</span>}
-      <span className="flex gap-1">
-        {[1, 2, 3, 4, 5].map((n, idx) => (
-          <button
-            type="button"
-            key={n}
-            onClick={() => onRate(n)}
-            className={`transition-all duration-200 ${value >= n ? RATING_ICONS[n - 1].color : "text-gray-300"} hover:scale-125 focus:outline-none`}
-            aria-label={`${RATING_ICONS[n - 1].label}${label ? ` for ${label}` : ""}`}
-          >
-            <Star className={`w-7 h-7 ${value >= n ? "fill-current" : ""} drop-shadow`} />
-          </button>
-        ))}
-      </span>
     </div>
   );
 }

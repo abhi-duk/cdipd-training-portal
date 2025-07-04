@@ -9,6 +9,7 @@ import {
   PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend
 } from "recharts";
 
+// ... (types same as your original)
 type Feedback = {
   id: number;
   tpId: number;
@@ -41,7 +42,13 @@ type FeedbackRow = {
   feedback: Feedback | null;
 };
 
-export default function AdminTrainingFeedbackPage({ params }: { params: { id: string } }) {
+// 👇 Type signature for the page is CRUCIAL! 
+export default function AdminTrainingFeedbackPage({
+  params,
+}: {
+  params: { id: string }
+}) {
+  // ... your component code exactly as before ...
   const [rows, setRows] = useState<FeedbackRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalFeedback, setModalFeedback] = useState<FeedbackRow | null>(null);

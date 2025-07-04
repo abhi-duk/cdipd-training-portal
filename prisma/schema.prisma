@@ -41,35 +41,36 @@ model TrainingParticipant {
 }
 
 model Feedback {
-  id                     Int      @id @default(autoincrement())
-  tp                     TrainingParticipant     @relation(fields: [tpId], references: [id])
-  tpId                   Int     @unique
+  id                     Int     @id @default(autoincrement())
+  tp                     TrainingParticipant @relation(fields: [tpId], references: [id])
+  tpId                   Int    @unique
 
   // About Trainer
-  trainerExplanation     Int                   
-  trainerKnowledge       Int                   
-  trainerEngagement      Int                   
-  trainerAnswering       Int                   
+  trainerExplanation     String
+  trainerKnowledge       String
+  trainerEngagement      String
+  trainerAnswering       String
 
   // Content Feedback
-  contentRelevance       Int                   
-  contentClarity         Int                   
-  contentOrganization    Int                   
+  contentRelevance       String
+  contentClarity         String
+  contentOrganization    String
 
   // Infrastructure Feedback
-  infrastructureComfort  Int                   
-  seatingArrangement     Int                   
-  venueLocation          Int                   
+  infrastructureComfort  String
+  seatingArrangement     String
+  venueLocation          String
 
   // Overall Satisfaction & Recommendation
-  overallSatisfaction    Int                   
-  recommendTraining      Boolean               
+  overallSatisfaction    String
+  recommendTraining      Boolean
 
   // Additional Comments
-  additionalComments     String?               
+  additionalComments     String?
 
-  submittedAt            DateTime                @default(now())
+  submittedAt            DateTime @default(now())
 }
+
 
 
 model Admin {

@@ -7,7 +7,7 @@ export async function GET(
   request: NextRequest,
   context: { params: Promise<{ trainingId: string }> }
 ) {
-  const { trainingId } = await context.params;
+  const { trainingId } = await context.params; // Await the params!
   const url = new URL(request.url);
   const participantId = url.searchParams.get("participantId");
   if (!participantId) {
@@ -38,8 +38,6 @@ export async function POST(
     return NextResponse.json({ error: "Missing participantId" }, { status: 400 });
   }
 
-  // --- Date/time restriction removed! ---
-
   // Find the TrainingParticipant link
   const tp = await prisma.trainingParticipant.findFirst({
     where: {
@@ -59,12 +57,21 @@ export async function POST(
     return NextResponse.json({ error: "Feedback already submitted" }, { status: 409 });
   }
 
-  // Create feedback
+  // Map number fields to string if your schema uses strings
+  const feedbackData = {
+    ...feedbackFields,
+    tpId: tp.id,
+  };
+
+  // (Optional) If you want to enforce string type:
+  for (const key of Object.keys(feedbackData)) {
+    if (key !== "tpId" && typeof feedbackData[key] !== "string") {
+      feedbackData[key] = String(feedbackData[key]);
+    }
+  }
+
   const feedback = await prisma.feedback.create({
-    data: {
-      ...feedbackFields,
-      tpId: tp.id,
-    },
+    data: feedbackData,
   });
 
   return NextResponse.json({ feedback });
